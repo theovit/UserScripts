@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Hanime Site Enhancer
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  Hides ads, forces new tabs, and cleans up page sections
 // @author       Moon
 // @match        https://*hanime.tv/*
@@ -20,11 +20,18 @@
         '.site-description',
         '.user_comments'
     ];
+    // 2. Define custom overrides (like your thumbnail fix)
+    const customOverrides = `
+        .hvc2__poster__image {
+            filter: none !important;
+            opacity: 1 !important;
+        }
+    `;
     const style = document.createElement('style');
-    style.innerHTML = hideSelectors.map(s => `${s} { display: none !important; }`).join('\n');
+    style.innerHTML = hideSelectors.map(s => `${s} { display: none !important; }`).join('\n') + customOverrides;
     document.head.appendChild(style);
 
-    // 2. Combined Maintenance Function
+    // 3. Combined Maintenance Function
     function runMaintenance() {
 
         // Task A: Clean up sections
@@ -63,7 +70,7 @@
     // Run once on load
     runMaintenance();
 
-    // 3. Single Observer for everything
+    // 4. Single Observer for everything
     const observer = new MutationObserver(runMaintenance);
     observer.observe(document.body, {
         childList: true,
