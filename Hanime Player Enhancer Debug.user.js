@@ -6,8 +6,8 @@
 // @author       Moon
 // @match        https://player.hanime.tv/*
 // @match        https://*hanime.tv/*
-// @updateURL    https://github.com/theovit/UserScripts/raw/refs/heads/main/Hanime%20Player%20Enhancer.user.js
-// @downloadURL  https://github.com/theovit/UserScripts/raw/refs/heads/main/Hanime%20Player%20Enhancer.user.js
+// @updateURL    https://github.com/theovit/UserScripts/raw/refs/heads/main/Hanime%20Player%20Enhancer%20Debug.user.js
+// @downloadURL  https://github.com/theovit/UserScripts/raw/refs/heads/main/Hanime%20Player%20Enhancer%20Debug.user.js
 // @grant        none
 // @run-at       document-end
 // ==/UserScript==
