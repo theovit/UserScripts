@@ -6,6 +6,8 @@
 // @author       Moon
 // @match        https://*hanime.tv/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=hanime.tv
+// @updateURL    https://github.com/theovit/UserScripts/raw/refs/heads/main/Hanime%20Site%20Enhancer-1.0.user.js
+// @downloadURL  https://github.com/theovit/UserScripts/raw/refs/heads/main/Hanime%20Site%20Enhancer-1.0.user.js
 // @grant        none
 // @run-at       document-end
 // ==/UserScript==
