@@ -1,0 +1,86 @@
+// ==UserScript==
+// @name         Hanime Player Enhancer Debug
+// @namespace    http://tampermonkey.net/
+// @version      1.3
+// @description  Adds seek shortcuts and touch overlays to the player iframe
+// @author       Moon
+// @match        https://player.hanime.tv/*
+// @match        https://*hanime.tv/*
+// @updateURL    https://github.com/theovit/UserScripts/raw/refs/heads/main/Hanime%20Player%20Enhancer.user.js
+// @downloadURL  https://github.com/theovit/UserScripts/raw/refs/heads/main/Hanime%20Player%20Enhancer.user.js
+// @grant        none
+// @run-at       document-end
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    // 1. Keyboard Shortcuts (keep these)
+    document.addEventListener('keydown', (e) => {
+        const video = document.querySelector('video');
+        if (!video) return;
+        if (e.key === 'ArrowRight') video.currentTime += 10;
+        if (e.key === 'ArrowLeft') video.currentTime -= 10;
+    });
+
+    function showFeedback(text, container) {
+        const popup = document.createElement('div');
+        popup.innerText = text;
+        popup.style.cssText = `
+            position: absolute; top: 50%; ${text.includes('+') ? 'right: 20%' : 'left: 20%'};
+            background: rgba(0,0,0,0.7); color: white; padding: 10px 20px;
+            border-radius: 5px; font-weight: bold; font-size: 20px;
+            z-index: 2000; transition: opacity 0.3s;
+        `;
+        container.appendChild(popup);
+
+        // Remove the popup after 500ms
+        setTimeout(() => {
+            popup.style.opacity = '0';
+            setTimeout(() => popup.remove(), 300);
+        }, 500);
+    }
+
+    function enhancePlayerInteractions() {
+        const video = document.querySelector('video');
+        if (!video || video.parentElement.querySelector('.seek-overlay')) return;
+
+        const overlay = document.createElement('div');
+        overlay.className = 'seek-overlay';
+        // Debugging style enabled
+        overlay.style.cssText = 'position: absolute; top: 10%; left: 0; width: 100%; height: 60%; display: flex; z-index: 999; pointer-events: none; border: 2px dashed red; background: rgba(255, 0, 0, 0.2);';
+
+        const zoneStyle = 'flex: 0 0 30%; cursor: pointer; pointer-events: auto;';
+
+        const left = document.createElement('div');
+        left.style.cssText = zoneStyle + ' border: 1px solid yellow;';
+        left.onclick = () => {
+            video.currentTime -= 10;
+            showFeedback('-10s', video.parentElement);
+        };
+
+        const center = document.createElement('div');
+        center.style.cssText = 'flex: 1; pointer-events: none; border: 1px solid blue;';
+
+        const right = document.createElement('div');
+        right.style.cssText = zoneStyle + ' border: 1px solid yellow;';
+        right.onclick = () => {
+            video.currentTime += 10;
+            showFeedback('+10s', video.parentElement);
+        };
+
+        overlay.appendChild(left);
+        overlay.appendChild(center);
+        overlay.appendChild(right);
+        video.parentElement.appendChild(overlay);
+
+        video.onclick = () => video.paused ? video.play() : video.pause();
+    }
+    // Initialize...
+    const checkVideo = setInterval(() => {
+        if (document.querySelector('video')) {
+            enhancePlayerInteractions();
+            clearInterval(checkVideo);
+        }
+    }, 500);
+})();
