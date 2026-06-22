@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Hanime Site Enhancer
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  Hides ads, forces new tabs, and cleans up page sections
 // @author       Moon
 // @match        https://*hanime.tv/*
@@ -16,8 +16,7 @@
     // 1. CSS Injections (run once)
     const hideSelectors = [
         '.site-description',
-        '.user_comments',
-        '.rc-section:not(.up-next)'
+        '.user_comments'
     ];
     const style = document.createElement('style');
     style.innerHTML = hideSelectors.map(s => `${s} { display: none !important; }`).join('\n');
@@ -25,6 +24,21 @@
 
     // 2. Combined Maintenance Function
     function runMaintenance() {
+
+        // Task A: Clean up sections
+        const sections = document.querySelectorAll('.rc-section');
+        sections.forEach(section => {
+
+            // Check for specific text content to protect the section
+            const titleDiv = section.querySelector('.rcs-title');
+            if (titleDiv && titleDiv.innerText.includes('series:')) {
+                // Keep this section visible
+                return;
+            }
+
+            // Otherwise, hide it
+            section.style.display = 'none';
+        });
 
         // Task A: Auto-close ads
         const closeButtons = document.querySelectorAll('.unit__close');
