@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Hanime Player Enhancer
 // @namespace    http://tampermonkey.net/
-// @version      1.3
+// @version      1.4
 // @description  Adds seek shortcuts and touch overlays to the player iframe
 // @author       Moon
 // @match        https://player.hanime.tv/*
@@ -47,7 +47,7 @@
 
         const overlay = document.createElement('div');
         overlay.className = 'seek-overlay';
-        overlay.style.cssText = 'position: absolute; top: 10%; left: 0; width: 100%; height: 60%; display: flex; z-index: 999; pointer-events: none;';
+        overlay.style.cssText = 'position: absolute; top: 10%; left: 0; width: 100%; height: 55%; display: flex; z-index: 999; pointer-events: none;';
         
         const zoneStyle = 'flex: 0 0 30%; cursor: pointer; pointer-events: auto;';
 
